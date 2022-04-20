@@ -1,0 +1,44 @@
+{
+  "name": "cpt2js",
+  "version": "1.1.0",
+  "description": "Color palette file parser to a function, input compatible with GDAL, GRASS, GMT, ArcGIS",
+  "keywords": [
+    "color",
+    "palette",
+    "cpt",
+    "gdal",
+    "grass",
+    "gmt",
+    "arcgis"
+  ],
+  "author": "WeatherLayers.com <info@weatherlayers.com>",
+  "license": "MPL-2.0",
+  "repository": "github:weatherlayers/cpt2js",
+  "main": "dist/cpt2js.cjs.js",
+  "module": "dist/cpt2js.esm.js",
+  "browser": "dist/cpt2js.umd.min.js",
+  "types": "dist/cpt2js.d.ts",
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/runtime": "^7.16.3",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@types/chroma-js": "^2.1.3",
+    "chroma-js": "^2.4.2",
+    "jest": "^27.3.1",
+    "jest-simple-summary": "^1.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.60.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-visualizer": "^5.5.2"
+  }
+}

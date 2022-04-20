@@ -1,0 +1,45 @@
+import pkg from './package.json';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
+import { terser } from 'rollup-plugin-terser';
+import visualizer from 'rollup-plugin-visualizer';
+
+function bundle(format, filename, options = {}) {
+  return {
+    input: 'src/index.js',
+    output: {
+      file: filename,
+      format: format,
+      name: 'cpt2js',
+      sourcemap: true,
+      banner: `/*!
+* Copyright (c) 2022 WeatherLayers.com
+*
+* This Source Code Form is subject to the terms of the Mozilla Public
+* License, v. 2.0. If a copy of the MPL was not distributed with this
+* file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/`,
+    },
+    external: [
+      'fs',
+      'path',
+    ],
+    plugins: [
+      resolve(),
+      commonjs(),
+      babel({ babelHelpers: 'runtime' }),
+      options.minimize ? terser() : false,
+      options.stats ? visualizer({
+        filename: filename + '.stats.html',
+      }) : false,
+    ],
+  };
+}
+
+export default [
+  bundle('cjs', pkg.main),
+  bundle('es', pkg.module),
+  bundle('umd', pkg.browser.replace('.min', ''), { stats: true }),
+  bundle('umd', pkg.browser, { minimize: true }),
+];
