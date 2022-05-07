@@ -85,14 +85,18 @@ const cptText = `
 0%   black
 100% white
 `;
-const scale = parseCptText(cptText, [0, 100]);
+const scale = parseCptText(cptText, { bounds: [0, 100] });
 
 scale(50).toString(); // '#808080'
 ```
 
 ### From array
 
-The library exposes a function `parseCptArray`, which can be used to parse the color palette array `[number, Color][]`.
+The library exposes a function `parseCptArray`, which can be used to parse the color palette array `[number | string, Color][]`.
+
+The second argument of `parseCptArray` is an options object:
+
+- bounds `[number, number]` - used only for resolving relative values to absolute values, default `[0, 1]`
 
 The parse result is a [Chroma.js Scale](https://vis4.net/chromajs/#chroma-scale), a function `(value: number) => Color`.
 
@@ -108,6 +112,22 @@ const cptArray = [
 const scale = parseCptArray(cptArray);
 
 scale(0.5).toString(); // '#808080'
+scale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
+scale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 255
+```
+
+### From array - Relative values
+
+```
+import { parseCptArray } from 'cpt2js';
+
+const cptArray = [
+  ['0%',   'black'],
+  ['100%', 'white'],
+];
+const scale = parseCptArray(cptArray, { bounds: [0, 100] });
+
+scale(50).toString(); // '#808080'
 ```
 
 ### Color ramp
