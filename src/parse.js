@@ -6,153 +6,117 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import chroma from './chroma';
+import { parseCptTextInternal } from './parse-text';
 
 /** @typedef {import('chroma-js').InterpolationMode} InterpolationMode */
 /** @typedef {import('chroma-js').Color} Color */
 /** @typedef {import('chroma-js').Scale} Scale */
-/** @typedef {{ bounds?: [number, number] }} ParseOptions */
-/** @typedef {{ color: Color, value: number | undefined }} ColorEntry */
+/** @typedef {{ bounds?: [number, number], mode?: InterpolationMode }} ParseOptions */
+/** @typedef {[number | string, Color]} CptEntry */
 
-/** @type {InterpolationMode} */
-const DEFAULT_MODE = 'rgb';
+const DEFAULT_MODE = /** @type {InterpolationMode} */ ('rgb');
+const COLOR_SEPARATOR_REGEX = /[ ,\t:\-\/]+/g;
 
 /**
- * @param {string[]} fields
- * @param {InterpolationMode} mode
+ * @param {string} value
  * @param {[number, number]} bounds
- * @returns {ColorEntry}
+ * @return {number}
  */
-function parseFields(fields, mode, bounds) {
-  if (fields.length === 2) {
-    fields = [fields[0], ...fields[1].split(/[-\/]/g)];
-  }
-  if (fields.length !== 2 && fields.length !== 4 && fields.length !== 5) {
-    return; // invalid line, ignore
-  }
-
-  let value;
-  if (fields[0][fields[0].length - 1] === '%') {
-    const percentage = parseFloat(fields[0]) / 100;
-    if (percentage < 0 || percentage > 1) {
-      throw new Error(`Wrong value for a percentage ${fields[0]}`);
+function parseValue(value, bounds) {
+  if (typeof value === 'string') {
+    if (value[value.length - 1] === '%') {
+      const percentage = parseFloat(value) / 100;
+      if (percentage < 0 || percentage > 1) {
+        throw new Error(`Invalid value for a percentage ${value}`);
+      }
+      value = bounds[0] + (bounds[1] - bounds[0]) * percentage;
+    } else if (value === 'nv') {
+      value = null; // GDAL nodata
+    } else if (value === 'default') {
+      return; // GRASS default (value < min || value > max), not supported yet, ignore
+    } else if (value === 'N') {
+      value = null; // GMT nodata
+    } else if (value === 'B') {
+      return; // GMT background (value < min), not supported yet, ignore
+    } else if (value === 'F') {
+      return; // GMT foreground (value > max), not supported yet, ignore
+    } else {
+      value = parseFloat(value);
     }
-    value = bounds[0] + (bounds[1] - bounds[0]) * percentage;
-  } else if (fields[0] === 'nv') {
-    value = null; // GDAL nodata
-  } else if (fields[0] === 'default') {
-    return; // GRASS default (value < min || value > max), not supported yet, ignore
-  } else if (fields[0] === 'N') {
-    value = null; // GMT nodata
-  } else if (fields[0] === 'B') {
-    return; // GMT background (value < min), not supported yet, ignore
-  } else if (fields[0] === 'F') {
-    return; // GMT foreground (value > max), not supported yet, ignore
+  } else if (typeof value === 'number') {
+    value = value;
   } else {
-    value = parseFloat(fields[0]);
+    throw new Error('Invalid state');
+  }
+  return value;
+}
+
+/**
+ * @param {string} color
+ * @param {InterpolationMode} mode
+ * @return {Color}
+ */
+function parseColor(color, mode) {
+  let fields;
+  if (typeof color === 'string') {
+    fields = color.split(COLOR_SEPARATOR_REGEX);
+  } else if (Array.isArray(color)) {
+    fields = color;
+  } else {
+    throw new Error('Invalid state');
   }
 
-  let color;
-  if (fields.length === 4 || fields.length === 5) {
-    // color
-    color = {
-      [mode[0]]: parseFloat(fields[1]),
-      [mode[1]]: parseFloat(fields[2]),
-      [mode[2]]: parseFloat(fields[3]),
-      ...(fields.length === 5 ? { a: parseFloat(fields[4]) } : {}),
-    };
-  } else if (fields.length === 2) {
-    if (fields[1].match(/\d+/)) {
+  if (fields.length === 1) {
+    if (fields[0].match(/\d+/)) {
       // grayscale color
       color = {
-        [mode[0]]: parseFloat(fields[1]),
-        [mode[1]]: parseFloat(fields[1]),
-        [mode[2]]: parseFloat(fields[1]),
+        [mode[0]]: parseFloat(fields[0]),
+        [mode[1]]: parseFloat(fields[0]),
+        [mode[2]]: parseFloat(fields[0]),
       };
     } else {
       // color name
-      color = fields[1];
+      color = fields[0];
     }
+  } else if (fields.length === 3) {
+    // color
+    color = {
+      [mode[0]]: parseFloat(fields[0]),
+      [mode[1]]: parseFloat(fields[1]),
+      [mode[2]]: parseFloat(fields[2]),
+    };
+  } else if (fields.length === 4) {
+    // color with alpha
+    color = {
+      [mode[0]]: parseFloat(fields[0]),
+      [mode[1]]: parseFloat(fields[1]),
+      [mode[2]]: parseFloat(fields[2]),
+      a: parseFloat(fields[3]),
+    };
   } else {
-    return; // invalid line, ignore
+    throw new Error(`Invalid color ${color}`);
   }
-
-  const entry = { color, value };
-  return entry;
+  return color;
 }
 
 /**
- * @param {string} line
- * @return {boolean}
- */
-function isLineComment(line) {
-  return line[0] === '#' || line[0] === '/';
-}
-
-/**
- * @param {string[]} lines
- * @return {boolean}
- */
-function isGmtLines(lines) {
-  return lines.some(line => {
-    if (!isLineComment(line)) {
-      if (line.includes('-') || line.includes('/')) {
-        return true;
-      }
-    }
-    return false;
-  });
-}
-
-/**
- * @param {string[]} lines
- * @return {InterpolationMode}
- */
-function getMode(lines) {
-  const modeLine = lines.find(line => isLineComment(line) && line.includes('COLOR_MODEL = '));
-  return modeLine && modeLine.match(/COLOR_MODEL = ([a-zA-Z]+)/)[1] || DEFAULT_MODE;
-}
-
-/**
- * @param {string} text
+ * @param {CptEntry[]} cptArray
  * @param {ParseOptions} [options]
  * @returns {Scale}
  */
-export function parseCptText(text, { bounds = [0, 1] } = {}) {
-  const lines = text.split('\n');
-
-  const isGmt = isGmtLines(lines);
-  const mode = getMode(lines);
-
+export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE } = {}) {
   const colors = [];
   const domain = [];
   let nodata;
-  /**
-   * @param {ColorEntry} entry
-   */
-  function addEntry(entry) {
-    if (!entry) {
-      return;
-    }
+  for (let [value, color] of cptArray) {
+    value = parseValue(value, bounds);
+    color = parseColor(color, mode);
 
-    if (typeof entry.value === 'number') {
-      colors.push(entry.color);
-      domain.push(entry.value);
-    } else if (entry.value === null) {
-      nodata = entry.color;
-    }
-  }
-
-  for (let line of lines) {
-    if (isLineComment(line)) {
-      continue;
-    }
-
-    const fields = line.split(/[ ,\t:]+/);
-    if (isGmt && fields.length >= 4) {
-      addEntry(parseFields(fields.slice(0, 2), mode, bounds));
-      addEntry(parseFields(fields.slice(2, 4), mode, bounds));
+    if (isFinite(value)) {
+      colors.push(color);
+      domain.push(value);
     } else {
-      addEntry(parseFields(fields, mode, bounds));
+      nodata = color;
     }
   }
 
@@ -164,13 +128,11 @@ export function parseCptText(text, { bounds = [0, 1] } = {}) {
 }
 
 /**
- * @param {[number, Color][]} array
+ * @param {string} cptText
+ * @param {ParseOptions} [options]
  * @returns {Scale}
  */
-export function parseCptArray(array) {
-  const colors = array.map(x => x[1]);
-  const domain = array.map(x => x[0]);
-
-  const palette = chroma.scale(colors).domain(domain);
-  return palette;
+export function parseCptText(cptText, { bounds = [0, 1], mode = DEFAULT_MODE } = {}) {
+  const { cptArray, mode: mode2 } = parseCptTextInternal(cptText);
+  return parseCptArray(cptArray, { bounds, mode: mode2 || mode });
 }
