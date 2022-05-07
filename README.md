@@ -132,30 +132,57 @@ const canvasDataUrl = canvas.toDataURL();
 const html = `<img src="${canvasDataUrl}">`;
 ```
 
-## Supported color palettes
+## Supported color palette features
 
-### Named colors
+<table>
+
+<tr>
+<th>
+Named colors
+</th>
+<td>
 
 ```
 0   black
 1   white
 ```
 
-### Hex colors
+</td>
+</tr>
+
+<tr>
+<th>
+Hex colors
+</th>
+<td>
 
 ```
 0   #000000
 1   #ffffff
 ```
 
-### RGB colors
+</td>
+</tr>
+
+<tr>
+<th>
+RGB colors
+</th>
+<td>
 
 ```
 0   0   0   0
 1   255 255 255
 ```
 
-### HSL colors
+</td>
+</tr>
+
+<tr>
+<th>
+HSL colors
+</th>
+<td>
 
 ```
 # COLOR_MODEL = hsl
@@ -164,7 +191,14 @@ const html = `<img src="${canvasDataUrl}">`;
 1   0   1 0.5
 ```
 
-### HSV colors
+</td>
+</tr>
+
+<tr>
+<th>
+HSV colors
+</th>
+<td>
 
 ```
 # COLOR_MODEL = hsv
@@ -173,10 +207,26 @@ const html = `<img src="${canvasDataUrl}">`;
 1   0   1 1
 ```
 
-### Nodata color
+</td>
+</tr>
+
+<tr>
+<th>
+Nodata color
+</th>
+<td>
 
 ```
 0   black
 1   white
 nv  gray
 ```
+
+</td>
+</tr>
+
+</table>
+
+## Thanks
+
+Discussion at [stac-extensions/raster#17](https://github.com/stac-extensions/raster/issues/17) and [Cloud-Native Geospatial Outreach Event 2022](https://www.ogc.org/ogcevents/cloud-native-geospatial-outreach-event) that sparked the idea for the library.
