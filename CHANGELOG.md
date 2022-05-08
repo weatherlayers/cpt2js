@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.4
+
+- support both lowercase and uppercase mode (rgb and RGB)
+
 ## 1.2.3
 
 - support PostGIS nodata values
