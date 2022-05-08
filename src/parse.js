@@ -30,20 +30,20 @@ function parseValue(value, bounds) {
         throw new Error(`Invalid value for a percentage ${value}`);
       }
       value = bounds[0] + (bounds[1] - bounds[0]) * percentage;
-    } else if (value === 'nv') {
-      value = null; // GDAL nodata
-    } else if (value === 'null') {
-      value = null; // PostGIS nodata
-    } else if (value === 'nodata') {
-      value = null; // PostGIS nodata
-    } else if (value === 'default') {
-      return; // GRASS default (value < min || value > max), not supported yet, ignore
     } else if (value === 'N') {
       value = null; // GMT nodata
     } else if (value === 'B') {
       return; // GMT background (value < min), not supported yet, ignore
     } else if (value === 'F') {
       return; // GMT foreground (value > max), not supported yet, ignore
+    } else if (value === 'nv') {
+      value = null; // GDAL nodata
+    } else if (value === 'default') {
+      return; // GRASS default (value < min || value > max), not supported yet, ignore
+    } else if (value === 'null') {
+      value = null; // PostGIS nodata
+    } else if (value === 'nodata') {
+      value = null; // PostGIS nodata
     } else {
       value = parseFloat(value);
     }
@@ -56,47 +56,42 @@ function parseValue(value, bounds) {
 }
 
 /**
- * @param {string} color
+ * @param {string | string[]} color
  * @param {InterpolationMode} mode
  * @return {Color}
  */
 function parseColor(color, mode) {
-  let fields;
-  if (typeof color === 'string') {
-    fields = color.split(COLOR_SEPARATOR_REGEX);
-  } else if (Array.isArray(color)) {
-    fields = color;
-  } else {
-    throw new Error('Invalid state');
-  }
-
-  if (fields.length === 1) {
-    if (fields[0].match(/\d+/)) {
-      // grayscale color
+  if (Array.isArray(color)) {
+    if (color.length === 4) {
+      // color with alpha
       color = {
-        [mode[0]]: parseFloat(fields[0]),
-        [mode[1]]: parseFloat(fields[0]),
-        [mode[2]]: parseFloat(fields[0]),
+        [mode[0]]: parseFloat(color[0]),
+        [mode[1]]: parseFloat(color[1]),
+        [mode[2]]: parseFloat(color[2]),
+        a: parseFloat(color[3]) / 255,
+      };
+    } else if (color.length === 3) {
+      // color
+      color = {
+        [mode[0]]: parseFloat(color[0]),
+        [mode[1]]: parseFloat(color[1]),
+        [mode[2]]: parseFloat(color[2]),
       };
     } else {
-      // color name
-      color = fields[0];
+      throw new Error(`Invalid color ${color}`);
     }
-  } else if (fields.length === 3) {
-    // color
-    color = {
-      [mode[0]]: parseFloat(fields[0]),
-      [mode[1]]: parseFloat(fields[1]),
-      [mode[2]]: parseFloat(fields[2]),
-    };
-  } else if (fields.length === 4) {
-    // color with alpha
-    color = {
-      [mode[0]]: parseFloat(fields[0]),
-      [mode[1]]: parseFloat(fields[1]),
-      [mode[2]]: parseFloat(fields[2]),
-      a: parseFloat(fields[3]) / 255,
-    };
+  } else if (typeof color === 'string') {
+    if (color.match(/\d+/)) {
+      // grayscale color
+      color = {
+        [mode[0]]: parseFloat(color),
+        [mode[1]]: parseFloat(color),
+        [mode[2]]: parseFloat(color),
+      };
+    } else {
+      // color name, pass through
+      color = color;
+    }
   } else {
     throw new Error(`Invalid color ${color}`);
   }
@@ -116,7 +111,7 @@ export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE }
     value = parseValue(value, bounds);
     color = parseColor(color, mode);
 
-    if (isFinite(value)) {
+    if (value != null) {
       colors.push(color);
       domain.push(value);
     } else {

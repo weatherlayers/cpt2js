@@ -2,8 +2,8 @@
 # doesn't work with 0 and 1 values only, needs at least 0.5 value as well, because otherwise Chroma.js interpolates the gradient in the shorter opposite direction
 
 # COLOR_MODEL = hsv
-0	300-1-1	0.5	150-1-1	L
-0.5	150-1-1	1	0-1-1	B
-B	0-0-0
-F	0-0-1
-N	0-0-0.50196
+0	300	1	1	0.5	150	1	1	L
+0.5	150	1	1	1	0	1	1	B
+B	0	0	0
+F	0	0	1
+N	0	0	0.50196
