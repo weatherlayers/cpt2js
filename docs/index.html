@@ -45,11 +45,6 @@
       font-size: 11px;
       bottom: 3px;
     }
-    .grad-step {
-      display: inline-block;
-      height: 20px;
-      width: 1%;
-    }
   </style>
 </head>
 <body>
@@ -119,28 +114,27 @@
 `],
     ]);
 
-    // see https://github.com/gka/chroma.js/blob/main/docs/index.html
-    function gradient(scale) {
-      const dom = scale.domain ? scale.domain() : [0, 1];
-      const dmin = Math.min(dom[0], dom[dom.length - 1]);
-      const dmax = Math.max(dom[dom.length - 1], dom[0]);
+    function gradient(palette) {
+      const paletteScale = cpt2js.parseCptText(palette);
+      const paletteDomain = paletteScale.domain();
+      const paletteBounds = [paletteDomain[0], paletteDomain[paletteDomain.length - 1]];
+      const paletteCanvas = cpt2js.colorRampCanvas(paletteScale);
+      const paletteCanvasDataUrl = paletteCanvas.toDataURL();
 
-      const canvas = cpt2js.colorRampCanvas(scale);
-      const canvasDataUrl = canvas.toDataURL();
-
-      let s = '<img src="' + canvasDataUrl + '" width="100%" height="20">';
-      s += '<span class="domain-min">' + dmin + '</span>';
-      s += '<span class="domain-med">' + (dmin + dmax) * 0.5 + '</span>';
-      s += '<span class="domain-max">' + dmax + '</span>';
-
-      return '<div class="gradient">' + s + '</div>';
+      return `
+        <div class="gradient">
+          <img src="${paletteCanvasDataUrl}" width="100%" height="20">
+          <span class="domain-min">${paletteBounds[0]}</span>
+          <span class="domain-med">${(paletteBounds[0] + paletteBounds[1]) * 0.5}</span>
+          <span class="domain-max">${paletteBounds[1]}</span>
+        </div>
+      `;
     }
 
     function convert() {
-      const cptText = document.querySelector('#input').value;
+      const palette = document.querySelector('#input').value;
       try {
-        const scale = cpt2js.parseCptText(cptText);
-        document.querySelector('#gradient').innerHTML = gradient(scale);
+        document.querySelector('#gradient').innerHTML = gradient(palette);
       } catch (e) {
         document.querySelector('#gradient').innerHTML = '';
         throw e;
@@ -148,8 +142,8 @@
     }
 
     function setSample(sampleName) {
-      const cptText = SAMPLES.get(sampleName).trim();
-      document.querySelector('#input').value = cptText;
+      const palette = SAMPLES.get(sampleName).trim();
+      document.querySelector('#input').value = palette;
       convert();
     }
 

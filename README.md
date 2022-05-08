@@ -66,15 +66,15 @@ The colors returned are [Chroma.js Color](https://vis4.net/chromajs/#color) obje
 ```
 import { parseCptText } from 'cpt2js';
 
-const cptText = `
+const palette = `
 0   black
 1   white
 `;
-const scale = parseCptText(cptText);
+const paletteScale = parseCptText(palette);
 
-scale(0.5).toString(); // '#808080'
-scale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
-scale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 255
+paletteScale(0.5).toString(); // '#808080'
+paletteScale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
+paletteScale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 255
 ```
 
 ### From text - Relative values
@@ -82,13 +82,13 @@ scale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 25
 ```
 import { parseCptText } from 'cpt2js';
 
-const cptText = `
+const palette = `
 0%   black
 100% white
 `;
-const scale = parseCptText(cptText, { bounds: [0, 100] });
+const paletteScale = parseCptText(palette, { bounds: [0, 100] });
 
-scale(50).toString(); // '#808080'
+paletteScale(50).toString(); // '#808080'
 ```
 
 ### From array
@@ -107,15 +107,15 @@ The colors returned are [Chroma.js Color](https://vis4.net/chromajs/#color) obje
 ```
 import { parseCptArray } from 'cpt2js';
 
-const cptArray = [
+const palette = [
   [0, 'black'],
   [1, 'white'],
 ];
-const scale = parseCptArray(cptArray);
+const paletteScale = parseCptArray(palette);
 
-scale(0.5).toString(); // '#808080'
-scale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
-scale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 255
+paletteScale(0.5).toString(); // '#808080'
+paletteScale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
+paletteScale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 255
 ```
 
 ### From array - Relative values
@@ -123,13 +123,13 @@ scale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alpha by 25
 ```
 import { parseCptArray } from 'cpt2js';
 
-const cptArray = [
+const palette = [
   ['0%',   'black'],
   ['100%', 'white'],
 ];
-const scale = parseCptArray(cptArray, { bounds: [0, 100] });
+const paletteScale = parseCptArray(palette, { bounds: [0, 100] });
 
-scale(50).toString(); // '#808080'
+paletteScale(50).toString(); // '#808080'
 ```
 
 ### Color ramp
@@ -144,14 +144,14 @@ The second argument of `colorRampCanvas` is an options object:
 ```
 import { parseCptText, colorRampCanvas } from 'cpt2js';
 
-const cptText = `
+const palette = `
 0   black
 1   white
 `;
-const scale = parseCptText(cptText);
-const canvas = colorRampCanvas(scale);
-const canvasDataUrl = canvas.toDataURL();
-const html = `<img src="${canvasDataUrl}">`;
+const paletteScale = parseCptText(palette);
+const paletteCanvas = colorRampCanvas(scale);
+const paletteCanvasDataUrl = paletteCanvas.toDataURL();
+const html = `<img src="${paletteCanvasDataUrl}">`;
 ```
 
 ## Supported color palette features
