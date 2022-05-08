@@ -37,7 +37,7 @@ Supported color formats and modes:
 Color palette references:
 
 - [cpt-city](http://soliton.vm.bytemark.co.uk/pub/cpt-city/) - a large collection of color palette files (use `cpt` or `pg` formats)
-- [cpt-city formats notes](http://soliton.vm.bytemark.co.uk/pub/cpt-city/notes/formats.html)
+- [cpt-city format notes](http://soliton.vm.bytemark.co.uk/pub/cpt-city/notes/formats.html)
 - [cpt-city software notes](http://soliton.vm.bytemark.co.uk/pub/cpt-city/notes/software.html)
 
 ## Install
@@ -158,13 +158,107 @@ const paletteCanvasDataUrl = paletteCanvas.toDataURL();
 const html = `<img src="${paletteCanvasDataUrl}">`;
 ```
 
-## Supported color palette features
+## Supported formats
 
 <table>
 
 <tr>
 <th>
-Named colors
+GMT4
+</th>
+<td>
+
+```
+0   0   0   0   1   255 255 255
+```
+
+</td>
+</tr>
+
+<tr>
+<th>
+GMT5
+</th>
+<td>
+
+```
+0   0/0/0   1   255/255/255
+```
+
+</td>
+</tr>
+
+<tr>
+<th>
+GDAL, GRASS, PostGIS, ArcGIS
+</th>
+<td>
+
+```
+0   0   0   0
+1   255 255 255
+```
+
+</td>
+</tr>
+
+</table>
+
+## Supported values
+
+<table>
+
+<tr>
+<th>
+Absolute
+</th>
+<td>
+
+```
+0   black
+```
+
+</td>
+</tr>
+
+<tr>
+<th>
+Relative
+</th>
+<td>
+
+```
+0%  black
+```
+
+</td>
+</tr>
+
+<tr>
+<th>
+Nodata
+</th>
+<td>
+
+```
+N      gray
+nv     gray
+null   gray
+nodata gray
+```
+
+</td>
+</tr>
+
+</table>
+
+## Supported colors
+
+<table>
+
+<tr>
+<th>
+Named
 </th>
 <td>
 
@@ -178,7 +272,7 @@ Named colors
 
 <tr>
 <th>
-Hex colors
+Hex
 </th>
 <td>
 
@@ -192,7 +286,7 @@ Hex colors
 
 <tr>
 <th>
-RGB colors
+RGB
 </th>
 <td>
 
@@ -206,7 +300,21 @@ RGB colors
 
 <tr>
 <th>
-HSL colors
+Alpha
+</th>
+<td>
+
+```
+0   0   0   0   0
+1   255 255 255 255
+```
+
+</td>
+</tr>
+
+<tr>
+<th>
+HSL
 </th>
 <td>
 
@@ -222,7 +330,7 @@ HSL colors
 
 <tr>
 <th>
-HSV colors
+HSV
 </th>
 <td>
 
@@ -231,21 +339,6 @@ HSV colors
 0   300 1 1
 0.5 150 1 1
 1   0   1 1
-```
-
-</td>
-</tr>
-
-<tr>
-<th>
-Nodata color
-</th>
-<td>
-
-```
-0   black
-1   white
-nv  gray
 ```
 
 </td>
