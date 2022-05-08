@@ -44,7 +44,7 @@ function isGmtText(lines) {
  */
 function getMode(lines) {
   const modeLine = lines.find(line => isLineComment(line) && line.includes('COLOR_MODEL = '));
-  return modeLine ? modeLine.match(/COLOR_MODEL = ([a-zA-Z]+)/)[1] : undefined;
+  return modeLine ? modeLine.match(/COLOR_MODEL = ([a-zA-Z]+)/)[1].toLowerCase() : undefined;
 }
 
 /**
