@@ -91,7 +91,7 @@ function parseColor(color, mode) {
       [mode[0]]: parseFloat(fields[0]),
       [mode[1]]: parseFloat(fields[1]),
       [mode[2]]: parseFloat(fields[2]),
-      a: parseFloat(fields[3]),
+      a: parseFloat(fields[3]) / 255,
     };
   } else {
     throw new Error(`Invalid color ${color}`);
