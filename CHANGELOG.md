@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.2.1
+
 - allow overriding mode
 
 ## 1.2.0
