@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0
+
+- support both GMT4 and GMT5
+
 ## 1.2.4
 
 - support both lowercase and uppercase mode (rgb and RGB)
