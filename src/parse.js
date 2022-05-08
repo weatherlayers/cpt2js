@@ -132,7 +132,7 @@ export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE }
  * @param {ParseOptions} [options]
  * @returns {Scale}
  */
-export function parseCptText(cptText, { bounds = [0, 1], mode = DEFAULT_MODE } = {}) {
+export function parseCptText(cptText, { bounds = [0, 1], mode } = {}) {
   const { cptArray, mode: mode2 } = parseCptTextInternal(cptText);
-  return parseCptArray(cptArray, { bounds, mode: mode2 || mode });
+  return parseCptArray(cptArray, { bounds, mode: mode ?? mode2 });
 }

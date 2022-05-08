@@ -1,5 +1,7 @@
 # Changelog
 
+- allow overriding mode
+
 ## 1.2.0
 
 - refactor
