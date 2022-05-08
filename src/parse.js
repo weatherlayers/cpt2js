@@ -15,7 +15,6 @@ import { parseCptTextInternal } from './parse-text';
 /** @typedef {[number | string, Color]} CptEntry */
 
 const DEFAULT_MODE = /** @type {InterpolationMode} */ ('rgb');
-const COLOR_SEPARATOR_REGEX = /[ ,\t:\-\/]+/g;
 
 /**
  * @param {string} value
