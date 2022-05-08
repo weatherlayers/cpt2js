@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3
+
+- support PostGIS nodata values
+
 ## 1.2.2
 
 - fix parsing alpha

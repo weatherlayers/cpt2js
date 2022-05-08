@@ -49,7 +49,7 @@ npm install cpt2js
 or
 
 ```
-<script src="https://unpkg.com/cpt2js@1.2.2/dist/cpt2js.umd.min.js"></script>
+<script src="https://unpkg.com/cpt2js@1.2.3/dist/cpt2js.umd.min.js"></script>
 ```
 
 ## Usage
