@@ -32,6 +32,10 @@ function parseValue(value, bounds) {
       value = bounds[0] + (bounds[1] - bounds[0]) * percentage;
     } else if (value === 'nv') {
       value = null; // GDAL nodata
+    } else if (value === 'null') {
+      value = null; // PostGIS nodata
+    } else if (value === 'nodata') {
+      value = null; // PostGIS nodata
     } else if (value === 'default') {
       return; // GRASS default (value < min || value > max), not supported yet, ignore
     } else if (value === 'N') {
