@@ -4,7 +4,7 @@
 [![](https://img.shields.io/david/weatherlayers/cpt2js)](https://www.npmjs.com/package/cpt2js)
 [![](https://img.shields.io/bundlephobia/min/cpt2js)](https://www.npmjs.com/package/cpt2js)
 
-Color palette file parser to a function, input compatible with [GDAL](https://gdal.org/programs/gdaldem.html#color-relief), [GRASS](https://grass.osgeo.org/grass80/manuals/r.colors.html), [GMT](https://docs.generic-mapping-tools.org/latest/cookbook/features.html#color-palette-tables), [ArcGIS](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/creating-a-color-map-clr-file.htm)
+Color palette file parser to a function, input compatible with [GMT](https://docs.generic-mapping-tools.org/latest/cookbook/features.html#color-palette-tables), [GDAL](https://gdal.org/programs/gdaldem.html#color-relief), [GRASS](https://grass.osgeo.org/grass80/manuals/r.colors.html), [PostGIS](http://postgis.net/docs/RT_ST_ColorMap.html), [ArcGIS](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/creating-a-color-map-clr-file.htm)
 
 [Demo](https://weatherlayers.github.io/cpt2js/)
 
@@ -34,7 +34,11 @@ Supported color formats and modes:
 - color modes - RGB, HSL, HSV
 - more color formats and modes can be added as needed
 
-Color palette files can be generated with [GMT makecpt](https://docs.generic-mapping-tools.org/latest/makecpt.html).
+Color palette references:
+
+- [cpt-city](http://soliton.vm.bytemark.co.uk/pub/cpt-city/) - a large collection of color palette files (use `cpt` or `pg` formats)
+- [cpt-city formats notes](http://soliton.vm.bytemark.co.uk/pub/cpt-city/notes/formats.html)
+- [cpt-city software notes](http://soliton.vm.bytemark.co.uk/pub/cpt-city/notes/software.html)
 
 ## Install
 

@@ -1,14 +1,16 @@
 {
   "name": "cpt2js",
   "version": "1.2.1",
-  "description": "Color palette file parser to a function, input compatible with GDAL, GRASS, GMT, ArcGIS",
+  "description": "Color palette file parser to a function, input compatible with GMT, GDAL, GRASS, PostGIS, ArcGIS",
   "keywords": [
     "color",
     "palette",
+    "colormap",
     "cpt",
+    "gmt",
     "gdal",
     "grass",
-    "gmt",
+    "postgis",
     "arcgis"
   ],
   "author": "WeatherLayers.com <info@weatherlayers.com>",
