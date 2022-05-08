@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+- fix parsing alpha
+
 ## 1.2.1
 
 - allow overriding mode
