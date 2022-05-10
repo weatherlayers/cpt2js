@@ -1,5 +1,7 @@
 # Changelog
 
+# 1.4.1
+
 - update TS exports
 
 # 1.4.0
