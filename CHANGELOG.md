@@ -1,5 +1,7 @@
 # Changelog
 
+# 1.3.1
+
 - add parseCpt function with format autodetection
 - remove superfluous overriding mode, can be overridden outside
 
