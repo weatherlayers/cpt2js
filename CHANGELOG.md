@@ -1,19 +1,21 @@
 # Changelog
 
+## 1.5.0
+
 - rename `Cpt*` to `Palette*`
 - fix tests with TS
 
-# 1.4.1
+## 1.4.1
 
 - update TS exports
 
-# 1.4.0
+## 1.4.0
 
 - migrate to TypeScript
 - make `parseCptText`, `parseCptArray` private, use `parseCpt` instead
 - trim text
 
-# 1.3.1
+## 1.3.1
 
 - add `parseCpt` function with format autodetection
 - remove superfluous overriding mode, can be overridden outside
