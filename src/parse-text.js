@@ -6,7 +6,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /** @typedef {import('chroma-js').InterpolationMode} InterpolationMode */
+/** @typedef {import('chroma-js').Color} Color */
 /** @typedef {[number | string, Color]} CptEntry */
+/** @typedef {CptEntry[]} CptArray */
 
 const LINE_SEPARATOR_REGEX = /[ ,\t:]+/g;
 const COLOR_SEPARATOR_REGEX = /[\-\/]/g;
@@ -69,7 +71,7 @@ function splitColor(color) {
 
 /**
  * @param {string} cptText
- * @returns {{ cptArray: CptEntry[], mode: InterpolationMode }}
+ * @returns {{ cptArray: CptArray, mode: InterpolationMode }}
  */
 export function parseCptTextInternal(cptText) {
   const lines = cptText.split('\n');

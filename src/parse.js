@@ -11,8 +11,8 @@ import { parseCptTextInternal } from './parse-text';
 /** @typedef {import('chroma-js').InterpolationMode} InterpolationMode */
 /** @typedef {import('chroma-js').Color} Color */
 /** @typedef {import('chroma-js').Scale} Scale */
+/** @typedef {import('./parse-text').CptArray} CptArray */
 /** @typedef {{ bounds?: [number, number] }} ParseOptions */
-/** @typedef {[number | string, Color]} CptEntry */
 
 const DEFAULT_MODE = /** @type {InterpolationMode} */ ('rgb');
 
@@ -98,8 +98,8 @@ function parseColor(color, mode) {
 }
 
 /**
- * @param {CptEntry[]} cptArray
- * @param {ParseOptions} [options]
+ * @param {CptArray} cptArray
+ * @param {ParseOptions & { mode?: InterpolationMode }} [options]
  * @returns {Scale}
  */
 export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE } = {}) {
@@ -133,4 +133,19 @@ export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE }
 export function parseCptText(cptText, { bounds = [0, 1] } = {}) {
   const { cptArray, mode } = parseCptTextInternal(cptText);
   return parseCptArray(cptArray, { bounds, mode });
+}
+
+/**
+ * @param {string | CptArray} cptTextOrArray
+ * @param {ParseOptions} [options]
+ * @returns {Scale}
+ */
+export function parseCpt(cptTextOrArray, options = {}) {
+  if (typeof cptTextOrArray === 'string') {
+    return parseCptText(cptTextOrArray, options);
+  } else if (Array.isArray(cptTextOrArray)) {
+    return parseCptArray(cptTextOrArray, options);
+  } else {
+    throw new Error('Invalid format');
+  }
 }
