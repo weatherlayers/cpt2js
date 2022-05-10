@@ -11,7 +11,7 @@ import { parseCptTextInternal } from './parse-text';
 /** @typedef {import('chroma-js').InterpolationMode} InterpolationMode */
 /** @typedef {import('chroma-js').Color} Color */
 /** @typedef {import('chroma-js').Scale} Scale */
-/** @typedef {{ bounds?: [number, number], mode?: InterpolationMode }} ParseOptions */
+/** @typedef {{ bounds?: [number, number] }} ParseOptions */
 /** @typedef {[number | string, Color]} CptEntry */
 
 const DEFAULT_MODE = /** @type {InterpolationMode} */ ('rgb');
@@ -130,7 +130,7 @@ export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE }
  * @param {ParseOptions} [options]
  * @returns {Scale}
  */
-export function parseCptText(cptText, { bounds = [0, 1], mode } = {}) {
-  const { cptArray, mode: mode2 } = parseCptTextInternal(cptText);
-  return parseCptArray(cptArray, { bounds, mode: mode ?? mode2 });
+export function parseCptText(cptText, { bounds = [0, 1] } = {}) {
+  const { cptArray, mode } = parseCptTextInternal(cptText);
+  return parseCptArray(cptArray, { bounds, mode });
 }

@@ -1,5 +1,7 @@
 # Changelog
 
+- remove superfluous overriding mode, can be overridden outside
+
 ## 1.3.0
 
 - support both GMT4 and GMT5

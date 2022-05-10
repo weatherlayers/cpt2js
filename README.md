@@ -61,7 +61,6 @@ The library exposes a function `parseCptText`, which can be used to parse the co
 The second argument of `parseCptText` is an options object:
 
 - bounds (`[number, number]`) - used for resolving relative values to absolute values, default `[0, 1]`
-- mode ([Chroma.js InterpolationMode](https://vis4.net/chromajs/#scale-mode)) - intepolation color mode, default detected from the input or `rgb`
 
 The parse result is a [Chroma.js Scale](https://vis4.net/chromajs/#chroma-scale), a function `(value: number) => Color`.
 
@@ -102,7 +101,6 @@ The library exposes a function `parseCptArray`, which can be used to parse the c
 The second argument of `parseCptArray` is an options object:
 
 - bounds (`[number, number]`) - used for resolving relative values to absolute values, default `[0, 1]`
-- mode ([Chroma.js InterpolationMode](https://vis4.net/chromajs/#scale-mode)) - intepolation color mode, default `rgb`
 
 The parse result is a [Chroma.js Scale](https://vis4.net/chromajs/#chroma-scale), a function `(value: number) => Color`.
 
