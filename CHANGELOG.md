@@ -1,5 +1,7 @@
 # Changelog
 
+- update TS exports
+
 # 1.4.0
 
 - migrate to TypeScript

@@ -15,6 +15,9 @@ export interface ParseOptions {
   bounds?: [number, number];
 }
 
+export type CptTextOrArray = string | CptArray;
+export { Scale };
+
 const DEFAULT_MODE: InterpolationMode = 'rgb';
 
 function parseValue(value: string | number, bounds: [number, number]): number | null | undefined {
@@ -116,7 +119,7 @@ function parseCptText(cptText: string, { bounds = [0, 1] }: ParseOptions = {}): 
   return parseCptArray(cptArray, { bounds, mode });
 }
 
-export function parseCpt(cptTextOrArray: string | CptArray, { bounds = [0, 1] }: ParseOptions = {}): Scale {
+export function parseCpt(cptTextOrArray: CptTextOrArray, { bounds = [0, 1] }: ParseOptions = {}): Scale {
   if (typeof cptTextOrArray === 'string') {
     return parseCptText(cptTextOrArray, { bounds });
   } else if (Array.isArray(cptTextOrArray)) {
