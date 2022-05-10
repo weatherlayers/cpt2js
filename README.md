@@ -4,7 +4,7 @@
 [![](https://img.shields.io/david/weatherlayers/cpt2js)](https://www.npmjs.com/package/cpt2js)
 [![](https://img.shields.io/bundlephobia/min/cpt2js)](https://www.npmjs.com/package/cpt2js)
 
-Color palette file parser to a function, input compatible with [GMT](https://docs.generic-mapping-tools.org/latest/cookbook/features.html#color-palette-tables), [GDAL](https://gdal.org/programs/gdaldem.html#color-relief), [GRASS](https://grass.osgeo.org/grass80/manuals/r.colors.html), [PostGIS](http://postgis.net/docs/RT_ST_ColorMap.html), [ArcGIS](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/creating-a-color-map-clr-file.htm)
+Color palette text parser to a function, input compatible with [GMT](https://docs.generic-mapping-tools.org/latest/cookbook/features.html#color-palette-tables), [GDAL](https://gdal.org/programs/gdaldem.html#color-relief), [GRASS](https://grass.osgeo.org/grass80/manuals/r.colors.html), [PostGIS](http://postgis.net/docs/RT_ST_ColorMap.html), [ArcGIS](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/creating-a-color-map-clr-file.htm)
 
 [Demo](https://weatherlayers.github.io/cpt2js/)
 
@@ -54,11 +54,14 @@ or
 
 ## Usage
 
-### From text
+The library exposes a function `parseCpt`, which can be used to parse the color palette text or array.
 
-The library exposes a function `parseCptText`, which can be used to parse the color palette file content.
+Formats:
 
-The second argument of `parseCptText` is an options object:
+- text (`string`) - see [Text format](#text-format) for details
+- array (`[number | string, Color][]`) - `Color` is any string/array/object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma)
+
+The second argument of `parseCpt` is an options object:
 
 - bounds (`[number, number]`) - used for resolving relative values to absolute values, default `[0, 1]`
 
@@ -66,14 +69,16 @@ The parse result is a [Chroma.js Scale](https://vis4.net/chromajs/#chroma-scale)
 
 The colors returned are [Chroma.js Color](https://vis4.net/chromajs/#color) objects, with default `toString` method returning a hex color.
 
+### From text
+
 ```
-import { parseCptText } from 'cpt2js';
+import { parseCpt } from 'cpt2js';
 
 const palette = `
 0   black
 1   white
 `;
-const paletteScale = parseCptText(palette);
+const paletteScale = parseCpt(palette);
 
 paletteScale(0.5).toString(); // '#808080'
 paletteScale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
@@ -83,39 +88,27 @@ paletteScale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alph
 ### From text - Relative values
 
 ```
-import { parseCptText } from 'cpt2js';
+import { parseCpt } from 'cpt2js';
 
 const palette = `
 0%   black
 100% white
 `;
-const paletteScale = parseCptText(palette, { bounds: [0, 100] });
+const paletteScale = parseCpt(palette, { bounds: [0, 100] });
 
 paletteScale(50).toString(); // '#808080'
 ```
 
 ### From array
 
-The library exposes a function `parseCptArray`, which can be used to parse the color palette array `[number | string, Color][]`.
-
-`Color` is any string/array/object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma).
-
-The second argument of `parseCptArray` is an options object:
-
-- bounds (`[number, number]`) - used for resolving relative values to absolute values, default `[0, 1]`
-
-The parse result is a [Chroma.js Scale](https://vis4.net/chromajs/#chroma-scale), a function `(value: number) => Color`.
-
-The colors returned are [Chroma.js Color](https://vis4.net/chromajs/#color) objects, with default `toString` method returning a hex color.
-
 ```
-import { parseCptArray } from 'cpt2js';
+import { parseCpt } from 'cpt2js';
 
 const palette = [
   [0, 'black'],
   [1, 'white'],
 ];
-const paletteScale = parseCptArray(palette);
+const paletteScale = parseCpt(palette);
 
 paletteScale(0.5).toString(); // '#808080'
 paletteScale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
@@ -125,13 +118,13 @@ paletteScale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alph
 ### From array - Relative values
 
 ```
-import { parseCptArray } from 'cpt2js';
+import { parseCpt } from 'cpt2js';
 
 const palette = [
   ['0%',   'black'],
   ['100%', 'white'],
 ];
-const paletteScale = parseCptArray(palette, { bounds: [0, 100] });
+const paletteScale = parseCpt(palette, { bounds: [0, 100] });
 
 paletteScale(50).toString(); // '#808080'
 ```
@@ -158,7 +151,9 @@ const paletteCanvasDataUrl = paletteCanvas.toDataURL();
 const html = `<img src="${paletteCanvasDataUrl}">`;
 ```
 
-## Supported formats
+## Text format
+
+### Formats
 
 <table>
 
@@ -204,7 +199,7 @@ GDAL, GRASS, PostGIS, ArcGIS
 
 </table>
 
-## Supported values
+### Values
 
 <table>
 
@@ -252,7 +247,7 @@ nodata gray
 
 </table>
 
-## Supported colors
+### Colors
 
 <table>
 

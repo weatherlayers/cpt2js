@@ -102,7 +102,7 @@ function parseColor(color, mode) {
  * @param {ParseOptions & { mode?: InterpolationMode }} [options]
  * @returns {Scale}
  */
-export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE } = {}) {
+function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE } = {}) {
   const colors = [];
   const domain = [];
   let nodata;
@@ -130,7 +130,7 @@ export function parseCptArray(cptArray, { bounds = [0, 1], mode = DEFAULT_MODE }
  * @param {ParseOptions} [options]
  * @returns {Scale}
  */
-export function parseCptText(cptText, { bounds = [0, 1] } = {}) {
+function parseCptText(cptText, { bounds = [0, 1] } = {}) {
   const { cptArray, mode } = parseCptTextInternal(cptText);
   return parseCptArray(cptArray, { bounds, mode });
 }
