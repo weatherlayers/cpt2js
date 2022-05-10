@@ -74,7 +74,7 @@ function splitColor(color) {
  * @returns {{ cptArray: CptArray, mode: InterpolationMode }}
  */
 export function parseCptTextInternal(cptText) {
-  const lines = cptText.split('\n');
+  const lines = cptText.trim().split('\n');
   const isGmt4 = isGmt4Text(lines);
   const isGmt5 = isGmt5Text(lines);
   const mode = getMode(lines);

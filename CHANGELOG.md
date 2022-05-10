@@ -1,5 +1,7 @@
 # Changelog
 
+- trim text
+
 # 1.3.1
 
 - add parseCpt function with format autodetection
