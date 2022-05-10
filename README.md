@@ -98,6 +98,8 @@ paletteScale(50).toString(); // '#808080'
 
 The library exposes a function `parseCptArray`, which can be used to parse the color palette array `[number | string, Color][]`.
 
+`Color` is any string/array/object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma).
+
 The second argument of `parseCptArray` is an options object:
 
 - bounds (`[number, number]`) - used for resolving relative values to absolute values, default `[0, 1]`
