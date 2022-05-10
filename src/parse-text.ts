@@ -5,27 +5,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/** @typedef {import('chroma-js').InterpolationMode} InterpolationMode */
-/** @typedef {import('chroma-js').Color} Color */
-/** @typedef {[number | string, Color]} CptEntry */
-/** @typedef {CptEntry[]} CptArray */
+import type { InterpolationMode } from 'chroma-js';
+
+export type ColorLiteral = string | number | [string, string, string] | [number, number, number] | [string, string, string, string] | [number, number, number, number];
+export type CptEntry = [string | number, ColorLiteral];
+export type CptArray = CptEntry[];
 
 const LINE_SEPARATOR_REGEX = /[ ,\t:]+/g;
 const COLOR_SEPARATOR_REGEX = /[\-\/]/g;
 
-/**
- * @param {string} line
- * @return {boolean}
- */
-function isLineComment(line) {
+function isLineComment(line: string): boolean {
   return line.startsWith('#');
 }
 
-/**
- * @param {string[]} lines
- * @return {boolean}
- */
-function isGmt4Text(lines) {
+function isGmt4Text(lines: string[]): boolean {
   return lines.some(line => {
     if (!isLineComment(line)) {
       if (line.split(LINE_SEPARATOR_REGEX).length >= 8) {
@@ -36,11 +29,7 @@ function isGmt4Text(lines) {
   });
 }
 
-/**
- * @param {string[]} lines
- * @return {boolean}
- */
-function isGmt5Text(lines) {
+function isGmt5Text(lines: string[]): boolean {
   return lines.some(line => {
     if (!isLineComment(line)) {
       if (line.includes('-') || line.includes('/')) {
@@ -51,36 +40,30 @@ function isGmt5Text(lines) {
   });
 }
 
-/**
- * @param {string[]} lines
- * @return {InterpolationMode}
- */
-function getMode(lines) {
+function getMode(lines: string[]): InterpolationMode | undefined {
   const modeLine = lines.find(line => isLineComment(line) && line.includes('COLOR_MODEL = '));
-  return modeLine ? modeLine.match(/COLOR_MODEL = ([a-zA-Z]+)/)[1].toLowerCase() : undefined;
+  if (modeLine) {
+    const match = modeLine.match(/COLOR_MODEL = ([a-zA-Z]+)/);
+    if (match) {
+      return match[1].toLowerCase() as InterpolationMode;
+    }
+  }
+  return undefined;
 }
 
-/**
- * @param {string} color
- * @return {Color}
- */
-function splitColor(color) {
-  color = color.split(COLOR_SEPARATOR_REGEX);
-  return color.length === 1 ? color[0] : color;
+function splitColor(color: string): ColorLiteral {
+  const colorArray = color.split(COLOR_SEPARATOR_REGEX);
+  return colorArray.length === 1 ? colorArray[0] : colorArray as ([string, string, string] | [string, string, string, string]);
 }
 
-/**
- * @param {string} cptText
- * @returns {{ cptArray: CptArray, mode: InterpolationMode }}
- */
-export function parseCptTextInternal(cptText) {
+export function parseCptTextInternal(cptText: string): { cptArray: CptArray, mode?: InterpolationMode } {
   const lines = cptText.trim().split('\n');
   const isGmt4 = isGmt4Text(lines);
   const isGmt5 = isGmt5Text(lines);
   const mode = getMode(lines);
 
   const cptLines = lines.filter(x => !!x && !x.startsWith('#'))
-  const cptArray = [];
+  const cptArray: CptArray = [];
   for (let cptLine of cptLines) {
     const fields = cptLine.split(LINE_SEPARATOR_REGEX);
     if (isGmt4) {
@@ -90,7 +73,7 @@ export function parseCptTextInternal(cptText) {
       } else if (fields.length === 4 || fields.length === 5) {
         cptArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
       } else {
-        // ignore line
+        // ignore
       }
     } else if (isGmt5) {
       if (fields.length === 4 || fields.length === 5) {
@@ -99,7 +82,7 @@ export function parseCptTextInternal(cptText) {
       } else if (fields.length === 2 || fields.length === 3) {
         cptArray.push([fields[0], splitColor(fields[1])]);
       } else {
-        // ignore line
+        // ignore
       }
     } else {
       if (fields.length === 5) {
@@ -109,7 +92,7 @@ export function parseCptTextInternal(cptText) {
       } else if (fields.length === 2) {
         cptArray.push([fields[0], fields[1]]);
       } else {
-        // ignore line
+        // ignore
       }
     }
   }

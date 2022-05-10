@@ -28,7 +28,7 @@ import 'chroma-js/src/interpolator/rgb';
 // generators -- > create new colors
 import mix from 'chroma-js/src/generator/mix';
 import scale from 'chroma-js/src/generator/scale';
-chroma.mix = chroma.interpolate = mix;
-chroma.scale = scale;
+(chroma as any).mix = (chroma as any).interpolate = mix;
+(chroma as any).scale = scale;
 
 export default chroma;

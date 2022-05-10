@@ -59,7 +59,7 @@ The library exposes a function `parseCpt`, which can be used to parse the color 
 Formats:
 
 - text (`string`) - see [Text format](#text-format) for details
-- array (`[number | string, Color][]`) - `Color` is any string/array/object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma)
+- array (`[string | number, ColorLiteral][]`) - `ColorLiteral` is any object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma)
 
 The second argument of `parseCpt` is an options object:
 

@@ -1,13 +1,14 @@
 import pkg from './package.json';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import babel from '@rollup/plugin-babel';
+import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
+import dts from 'rollup-plugin-dts';
 
 function bundle(format, filename, options = {}) {
   return {
-    input: 'src/index.js',
+    input: 'src/index.ts',
     output: {
       file: filename,
       format: format,
@@ -28,7 +29,10 @@ function bundle(format, filename, options = {}) {
     plugins: [
       resolve(),
       commonjs(),
-      babel({ babelHelpers: 'runtime' }),
+      typescript({
+        typescript: require('typescript'),
+        clean: options.stats,
+      }),
       options.minimize ? terser() : false,
       options.stats ? visualizer({
         filename: filename + '.stats.html',
@@ -42,4 +46,12 @@ export default [
   bundle('es', pkg.module),
   bundle('umd', pkg.browser.replace('.min', ''), { stats: true }),
   bundle('umd', pkg.browser, { minimize: true }),
+  {
+    input: 'src/index.ts',
+    output: {
+      file: pkg.types,
+      format: 'es',
+    },
+    plugins: [dts()],
+  },
 ];

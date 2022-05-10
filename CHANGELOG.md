@@ -1,5 +1,6 @@
 # Changelog
 
+- migrate to TypeScript
 - make `parseCptText`, `parseCptArray` private, use `parseCpt` instead
 - trim text
 
