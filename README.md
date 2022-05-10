@@ -54,14 +54,14 @@ or
 
 ## Usage
 
-The library exposes a function `parseCpt`, which can be used to parse the color palette text or array.
+The library exposes a function `parsePalette`, which can be used to parse the color palette text or array.
 
 Formats:
 
 - text (`string`) - see [Text format](#text-format) for details
-- array (`[string | number, ColorLiteral][]`) - `ColorLiteral` is any object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma)
+- array (`[string | number, PaletteColor][]`) - `PaletteColor` is any object accepted by [Chroma.js constructor](https://vis4.net/chromajs/#chroma)
 
-The second argument of `parseCpt` is an options object:
+The second argument of `parsePalette` is an options object:
 
 - bounds (`[number, number]`) - used for resolving relative values to absolute values, default `[0, 1]`
 
@@ -72,13 +72,13 @@ The colors returned are [Chroma.js Color](https://vis4.net/chromajs/#color) obje
 ### From text
 
 ```
-import { parseCpt } from 'cpt2js';
+import { parsePalette } from 'cpt2js';
 
 const palette = `
 0   black
 1   white
 `;
-const paletteScale = parseCpt(palette);
+const paletteScale = parsePalette(palette);
 
 paletteScale(0.5).toString(); // '#808080'
 paletteScale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
@@ -88,13 +88,13 @@ paletteScale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alph
 ### From text - Relative values
 
 ```
-import { parseCpt } from 'cpt2js';
+import { parsePalette } from 'cpt2js';
 
 const palette = `
 0%   black
 100% white
 `;
-const paletteScale = parseCpt(palette, { bounds: [0, 100] });
+const paletteScale = parsePalette(palette, { bounds: [0, 100] });
 
 paletteScale(50).toString(); // '#808080'
 ```
@@ -102,13 +102,13 @@ paletteScale(50).toString(); // '#808080'
 ### From array
 
 ```
-import { parseCpt } from 'cpt2js';
+import { parsePalette } from 'cpt2js';
 
 const palette = [
   [0, 'black'],
   [1, 'white'],
 ];
-const paletteScale = parseCpt(palette);
+const paletteScale = parsePalette(palette);
 
 paletteScale(0.5).toString(); // '#808080'
 paletteScale(0.5).css(); // 'rgb(128, 128, 128)' - use for CSS
@@ -118,13 +118,13 @@ paletteScale(0.5).rgba(); // [128, 128, 128, 1] - use for deck.gl, multiply alph
 ### From array - Relative values
 
 ```
-import { parseCpt } from 'cpt2js';
+import { parsePalette } from 'cpt2js';
 
 const palette = [
   ['0%',   'black'],
   ['100%', 'white'],
 ];
-const paletteScale = parseCpt(palette, { bounds: [0, 100] });
+const paletteScale = parsePalette(palette, { bounds: [0, 100] });
 
 paletteScale(50).toString(); // '#808080'
 ```
@@ -139,13 +139,13 @@ The second argument of `colorRampCanvas` is an options object:
 - height (`number`) - height of the canvas, default `1`
 
 ```
-import { parseCptText, colorRampCanvas } from 'cpt2js';
+import { parsePalette, colorRampCanvas } from 'cpt2js';
 
 const palette = `
 0   black
 1   white
 `;
-const paletteScale = parseCptText(palette);
+const paletteScale = parsePalette(palette);
 const paletteCanvas = colorRampCanvas(scale);
 const paletteCanvasDataUrl = paletteCanvas.toDataURL();
 const html = `<img src="${paletteCanvasDataUrl}">`;

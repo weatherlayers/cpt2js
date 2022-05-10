@@ -7,9 +7,9 @@
  */
 import type { InterpolationMode } from 'chroma-js';
 
-export type ColorLiteral = string | number | [string, string, string] | [number, number, number] | [string, string, string, string] | [number, number, number, number];
-export type CptEntry = [string | number, ColorLiteral];
-export type CptArray = CptEntry[];
+export type PaletteColor = string | number | [string, string, string] | [number, number, number] | [string, string, string, string] | [number, number, number, number];
+export type PaletteEntry = [string | number, PaletteColor];
+export type PaletteArray = PaletteEntry[];
 
 const LINE_SEPARATOR_REGEX = /[ ,\t:]+/g;
 const COLOR_SEPARATOR_REGEX = /[\-\/]/g;
@@ -51,51 +51,51 @@ function getMode(lines: string[]): InterpolationMode | undefined {
   return undefined;
 }
 
-function splitColor(color: string): ColorLiteral {
+function splitColor(color: string): PaletteColor {
   const colorArray = color.split(COLOR_SEPARATOR_REGEX);
-  return colorArray.length === 1 ? colorArray[0] : colorArray as ([string, string, string] | [string, string, string, string]);
+  return colorArray.length === 1 ? colorArray[0] : colorArray as PaletteColor;
 }
 
-export function parseCptTextInternal(cptText: string): { cptArray: CptArray, mode?: InterpolationMode } {
-  const lines = cptText.trim().split('\n');
+export function parsePaletteTextInternal(paletteText: string): { paletteArray: PaletteArray, mode?: InterpolationMode } {
+  const lines = paletteText.trim().split('\n');
   const isGmt4 = isGmt4Text(lines);
   const isGmt5 = isGmt5Text(lines);
   const mode = getMode(lines);
 
-  const cptLines = lines.filter(x => !!x && !x.startsWith('#'))
-  const cptArray: CptArray = [];
-  for (let cptLine of cptLines) {
-    const fields = cptLine.split(LINE_SEPARATOR_REGEX);
+  const paletteLines = lines.filter(x => !!x && !x.startsWith('#'))
+  const paletteArray: PaletteArray = [];
+  for (let paletteLine of paletteLines) {
+    const fields = paletteLine.split(LINE_SEPARATOR_REGEX);
     if (isGmt4) {
       if (fields.length === 8 || fields.length === 9) {
-        cptArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
-        cptArray.push([fields[4], [fields[5], fields[6], fields[7]]]);
+        paletteArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
+        paletteArray.push([fields[4], [fields[5], fields[6], fields[7]]]);
       } else if (fields.length === 4 || fields.length === 5) {
-        cptArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
+        paletteArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
       } else {
         // ignore
       }
     } else if (isGmt5) {
       if (fields.length === 4 || fields.length === 5) {
-        cptArray.push([fields[0], splitColor(fields[1])]);
-        cptArray.push([fields[2], splitColor(fields[3])]);
+        paletteArray.push([fields[0], splitColor(fields[1])]);
+        paletteArray.push([fields[2], splitColor(fields[3])]);
       } else if (fields.length === 2 || fields.length === 3) {
-        cptArray.push([fields[0], splitColor(fields[1])]);
+        paletteArray.push([fields[0], splitColor(fields[1])]);
       } else {
         // ignore
       }
     } else {
       if (fields.length === 5) {
-        cptArray.push([fields[0], [fields[1], fields[2], fields[3], fields[4]]]);
+        paletteArray.push([fields[0], [fields[1], fields[2], fields[3], fields[4]]]);
       } else if (fields.length === 4) {
-        cptArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
+        paletteArray.push([fields[0], [fields[1], fields[2], fields[3]]]);
       } else if (fields.length === 2) {
-        cptArray.push([fields[0], fields[1]]);
+        paletteArray.push([fields[0], fields[1]]);
       } else {
         // ignore
       }
     }
   }
 
-  return { cptArray, mode };
+  return { paletteArray, mode };
 }

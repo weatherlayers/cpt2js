@@ -115,7 +115,7 @@
     ]);
 
     function gradient(palette) {
-      const paletteScale = cpt2js.parseCpt(palette);
+      const paletteScale = cpt2js.parsePalette(palette);
       const paletteDomain = paletteScale.domain();
       const paletteBounds = [paletteDomain[0], paletteDomain[paletteDomain.length - 1]];
       const paletteCanvas = cpt2js.colorRampCanvas(paletteScale);

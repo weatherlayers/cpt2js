@@ -6,17 +6,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import chroma from './chroma';
-import { ColorLiteral, parseCptTextInternal } from './parse-text';
+import { parsePaletteTextInternal } from './parse-text';
 
 import type { InterpolationMode, Scale } from 'chroma-js';
-import type { CptArray } from './parse-text';
+import type { PaletteColor, PaletteEntry, PaletteArray } from './parse-text';
+
+export { Scale, PaletteColor, PaletteEntry, PaletteArray };
+export type Palette = string | PaletteArray;
 
 export interface ParseOptions {
   bounds?: [number, number];
 }
-
-export type CptTextOrArray = string | CptArray;
-export { Scale };
 
 const DEFAULT_MODE: InterpolationMode = 'rgb';
 
@@ -52,7 +52,7 @@ function parseValue(value: string | number, bounds: [number, number]): number | 
   }
 }
 
-function parseColor(color: ColorLiteral, mode: InterpolationMode): object | string {
+function parseColor(color: PaletteColor, mode: InterpolationMode): object | string {
   if (Array.isArray(color)) {
     if (color.length === 4) {
       // color with alpha
@@ -89,11 +89,11 @@ function parseColor(color: ColorLiteral, mode: InterpolationMode): object | stri
   }
 }
 
-function parseCptArray(cptArray: CptArray, { bounds = [0, 1], mode = DEFAULT_MODE }: ParseOptions & { mode?: InterpolationMode } = {}): Scale {
+function parsePaletteArray(paletteArray: PaletteArray, { bounds = [0, 1], mode = DEFAULT_MODE }: ParseOptions & { mode?: InterpolationMode } = {}): Scale {
   const colors: (object | string)[] = [];
   const domain: number[] = [];
   let nodata;
-  for (let [value, color] of cptArray) {
+  for (let [value, color] of paletteArray) {
     const parsedValue = parseValue(value, bounds);
     const parsedColor = parseColor(color, mode);
 
@@ -114,16 +114,16 @@ function parseCptArray(cptArray: CptArray, { bounds = [0, 1], mode = DEFAULT_MOD
   return palette;
 }
 
-function parseCptText(cptText: string, { bounds = [0, 1] }: ParseOptions = {}): Scale {
-  const { cptArray, mode } = parseCptTextInternal(cptText);
-  return parseCptArray(cptArray, { bounds, mode });
+function parsePaletteText(paletteText: string, { bounds = [0, 1] }: ParseOptions = {}): Scale {
+  const { paletteArray, mode } = parsePaletteTextInternal(paletteText);
+  return parsePaletteArray(paletteArray, { bounds, mode });
 }
 
-export function parseCpt(cptTextOrArray: CptTextOrArray, { bounds = [0, 1] }: ParseOptions = {}): Scale {
-  if (typeof cptTextOrArray === 'string') {
-    return parseCptText(cptTextOrArray, { bounds });
-  } else if (Array.isArray(cptTextOrArray)) {
-    return parseCptArray(cptTextOrArray, { bounds });
+export function parsePalette(palette: Palette, { bounds = [0, 1] }: ParseOptions = {}): Scale {
+  if (typeof palette === 'string') {
+    return parsePaletteText(palette, { bounds });
+  } else if (Array.isArray(palette)) {
+    return parsePaletteArray(palette, { bounds });
   } else {
     throw new Error('Invalid format');
   }

@@ -1,5 +1,6 @@
 # Changelog
 
+- rename `Cpt*` to `Palette*`
 - fix tests with TS
 
 # 1.4.1

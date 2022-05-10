@@ -6,22 +6,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as fs from 'fs';
-import { parseCpt } from './parse';
+import { parsePalette } from './parse';
 
 const PATH = __dirname + '/../fixtures';
 const FILENAMES = fs.readdirSync(PATH).filter(x => x.endsWith('.cpt'));
 
-describe('parseCpt', () => {
+describe('parsePalette', () => {
   it.each(FILENAMES)('returns a color palette from a text', (filename) => {
     const cptText = fs.readFileSync(PATH + '/' + filename).toString();
-    const actual = parseCpt(cptText);
+    const actual = parsePalette(cptText);
 
     expect(actual).toBeDefined();
   });
 
   it.each(FILENAMES)('returns a color palette from an array', (filename) => {
     const cptArray = fs.readFileSync(PATH + '/' + filename.replace('.cpt', '.json')).toString();
-    const actual = parseCpt(cptArray);
+    const actual = parsePalette(cptArray);
 
     expect(actual).toBeDefined();
   });
