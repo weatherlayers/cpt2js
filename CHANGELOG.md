@@ -1,5 +1,7 @@
 # Changelog
 
+- fix tests with TS
+
 # 1.4.1
 
 - update TS exports

@@ -33,6 +33,7 @@
     "@types/jest": "^27.5.0",
     "chroma-js": "^2.4.2",
     "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "jest-simple-summary": "^1.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.60.1",
