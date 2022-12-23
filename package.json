@@ -1,6 +1,6 @@
 {
   "name": "cpt2js",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Color palette text parser to a function, input compatible with GMT, GDAL, GRASS, PostGIS, ArcGIS",
   "keywords": [
     "color",
