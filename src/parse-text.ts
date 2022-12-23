@@ -32,7 +32,7 @@ function isGmt4Text(lines: string[]): boolean {
 function isGmt5Text(lines: string[]): boolean {
   return lines.some(line => {
     if (!isLineComment(line)) {
-      if (line.includes('-') || line.includes('/')) {
+      if (line.match(/\d+\-\d+\-\d+/) || line.match(/\d+\/\d+\/\d+/)) {
         return true;
       }
     }
