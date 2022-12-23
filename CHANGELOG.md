@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1
+
+- fix parsing palettes with values in scientific notation
+
 ## 1.5.0
 
 - rename `Cpt*` to `Palette*`
