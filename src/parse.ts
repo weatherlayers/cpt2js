@@ -73,7 +73,7 @@ function parseColor(color: PaletteColor, mode: InterpolationMode): object | stri
       throw new Error(`Invalid color ${color}`);
     }
   } else if (typeof color === 'string' || typeof color === 'number') {
-    if (color.toString().match(/\d+/) || typeof color === 'number') {
+    if (color.toString().match(/^\d+$/) || typeof color === 'number') {
       // grayscale color
       return {
         [mode[0]]: parseFloat(color.toString()),

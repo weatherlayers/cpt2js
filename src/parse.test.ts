@@ -17,12 +17,22 @@ describe('parsePalette', () => {
     const actual = parsePalette(cptText);
 
     expect(actual).toBeDefined();
+
+    const color = actual(0).rgb();
+    expect(isFinite(color[0])).toBeTruthy();
+    expect(isFinite(color[1])).toBeTruthy();
+    expect(isFinite(color[2])).toBeTruthy();
   });
 
   it.each(FILENAMES)('returns a color palette from an array', (filename) => {
-    const cptArray = fs.readFileSync(PATH + '/' + filename.replace('.cpt', '.json')).toString();
+    const cptArray = JSON.parse(fs.readFileSync(PATH + '/' + filename.replace('.cpt', '.json')).toString()).paletteArray;
     const actual = parsePalette(cptArray);
 
     expect(actual).toBeDefined();
+
+    const color = actual(0).rgb();
+    expect(isFinite(color[0])).toBeTruthy();
+    expect(isFinite(color[1])).toBeTruthy();
+    expect(isFinite(color[2])).toBeTruthy();
   });
 });
