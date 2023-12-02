@@ -5,11 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import chroma from './chroma';
-import { parsePaletteTextInternal } from './parse-text';
+import chroma from './chroma.js';
+import { parsePaletteTextInternal } from './parse-text.js';
 
 import type { InterpolationMode, Scale } from 'chroma-js';
-import type { PaletteColor, PaletteEntry, PaletteArray } from './parse-text';
+import type { PaletteColor, PaletteEntry, PaletteArray } from './parse-text.js';
 
 export { Scale, PaletteColor, PaletteEntry, PaletteArray };
 export type Palette = string | PaletteArray;

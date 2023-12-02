@@ -1,10 +1,11 @@
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
-import visualizer from 'rollup-plugin-visualizer';
+import terser from '@rollup/plugin-terser';
+import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'rollup-plugin-dts';
+import tsc from 'typescript';
 
 function bundle(format, filename, options = {}) {
   return {
@@ -30,7 +31,7 @@ function bundle(format, filename, options = {}) {
       resolve(),
       commonjs(),
       typescript({
-        typescript: require('typescript'),
+        typescript: tsc,
         clean: options.stats,
       }),
       options.minimize ? terser() : false,
