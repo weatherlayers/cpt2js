@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.2
+
+- fix parsing hex colors
+- update dependencies
+
 ## 1.5.1
 
 - fix parsing palettes with values in scientific notation
