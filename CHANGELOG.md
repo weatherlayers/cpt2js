@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.3
+
+- add ESM exports
+
 ## 1.5.2
 
 - fix parsing hex colors
