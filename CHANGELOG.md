@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2
+
+- update published dist files
+
 ## 1.6.1
 
 - publish dist directory
