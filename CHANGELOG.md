@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1
+
+- publish dist directory
+
 ## 1.6.0
 
 - rename export files to be recognized as CJS/ESM by extension
