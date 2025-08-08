@@ -32,26 +32,21 @@
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "dev": "rollup -c -w",
-    "test": "jest",
+    "test": "tsx --test src/**/*.test.ts",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/chroma-js": "^2.4.3",
-    "@types/jest": "^29.5.10",
     "chroma-js": "^2.4.2",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "jest-simple-summary": "^1.0.2",
-    "rimraf": "^5.0.5",
-    "rollup": "^4.6.1",
-    "rollup-plugin-dts": "^6.1.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.46.2",
+    "rollup-plugin-dts": "^6.2.1",
     "rollup-plugin-typescript2": "^0.36.0",
-    "rollup-plugin-visualizer": "^5.9.3",
-    "ts-jest": "^29.1.1",
-    "tslib": "^2.4.0",
-    "typescript": "^5.3.2"
+    "rollup-plugin-visualizer": "^6.0.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
   }
 }

@@ -5,34 +5,45 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import assert from 'node:assert';
+import test from 'node:test';
+import * as path from 'node:path';
+import * as url from 'node:url';
 import * as fs from 'fs';
-import { parsePalette } from './parse';
+import { parsePalette } from './parse.js';
 
-const PATH = __dirname + '/../fixtures';
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+const PATH = path.join(__dirname, '../fixtures');
 const FILENAMES = fs.readdirSync(PATH).filter(x => x.endsWith('.cpt'));
 
-describe('parsePalette', () => {
-  it.each(FILENAMES)('returns a color palette from a text', (filename) => {
-    const cptText = fs.readFileSync(PATH + '/' + filename).toString();
+test('parsePalette - returns a color palette from a text', () => {
+  for (const filename of FILENAMES) {
+    const cptPath = path.join(PATH, filename);
+
+    const cptText = fs.readFileSync(cptPath).toString();
     const actual = parsePalette(cptText);
 
-    expect(actual).toBeDefined();
+    assert(actual);
 
     const color = actual(0).rgb();
-    expect(isFinite(color[0])).toBeTruthy();
-    expect(isFinite(color[1])).toBeTruthy();
-    expect(isFinite(color[2])).toBeTruthy();
-  });
+    assert(isFinite(color[0]));
+    assert(isFinite(color[1]));
+    assert(isFinite(color[2]));
+  }
+});
 
-  it.each(FILENAMES)('returns a color palette from an array', (filename) => {
-    const cptArray = JSON.parse(fs.readFileSync(PATH + '/' + filename.replace('.cpt', '.json')).toString()).paletteArray;
+test('parsePalette - returns a color palette from an array', () => {
+  for (const filename of FILENAMES) {
+    const jsonPath = path.join(PATH, filename.replace('.cpt', '.json'));
+
+    const cptArray = JSON.parse(fs.readFileSync(jsonPath).toString()).paletteArray;
     const actual = parsePalette(cptArray);
 
-    expect(actual).toBeDefined();
+    assert(actual);
 
     const color = actual(0).rgb();
-    expect(isFinite(color[0])).toBeTruthy();
-    expect(isFinite(color[1])).toBeTruthy();
-    expect(isFinite(color[2])).toBeTruthy();
-  });
+    assert(isFinite(color[0]));
+    assert(isFinite(color[1]));
+    assert(isFinite(color[2]));
+  }
 });
