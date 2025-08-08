@@ -16,6 +16,12 @@
   "author": "WeatherLayers.com <info@weatherlayers.com>",
   "license": "MPL-2.0",
   "repository": "github:weatherlayers/cpt2js",
+  "files": [
+    "LICENSE.md",
+    "dist/**/*.min.cjs",
+    "dist/**/*.min.js",
+    "dist/**/*.d.ts"
+  ],
   "type": "module",
   "exports": {
     ".": {
