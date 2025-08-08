@@ -18,8 +18,8 @@
   "repository": "github:weatherlayers/cpt2js",
   "files": [
     "LICENSE.md",
-    "dist/**/*.min.cjs",
-    "dist/**/*.min.js",
+    "dist/**/*.cjs",
+    "dist/**/*.js",
     "dist/**/*.d.ts"
   ],
   "type": "module",
