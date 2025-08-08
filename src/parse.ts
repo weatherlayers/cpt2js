@@ -11,7 +11,7 @@ import { parsePaletteTextInternal } from './parse-text.js';
 import type { InterpolationMode, Scale } from 'chroma-js';
 import type { PaletteColor, PaletteEntry, PaletteArray } from './parse-text.js';
 
-export { Scale, PaletteColor, PaletteEntry, PaletteArray };
+export type { Scale, PaletteColor, PaletteEntry, PaletteArray };
 export type Palette = string | PaletteArray;
 
 export interface ParseOptions {
