@@ -21,13 +21,13 @@
     ".": {
       "types": "./dist/cpt2js.d.ts",
       "script": "./dist/cpt2js.umd.min.js",
-      "import": "./dist/cpt2js.esm.js",
-      "require": "./dist/cpt2js.cjs.js",
-      "default": "./dist/cpt2js.esm.js"
+      "import": "./dist/cpt2js.js",
+      "require": "./dist/cpt2js.cjs",
+      "default": "./dist/cpt2js.js"
     }
   },
-  "main": "./dist/cpt2js.cjs.js",
-  "module": "./dist/cpt2js.esm.js",
+  "main": "./dist/cpt2js.cjs",
+  "module": "./dist/cpt2js.js",
   "browser": "./dist/cpt2js.umd.min.js",
   "types": "./dist/cpt2js.d.ts",
   "scripts": {
