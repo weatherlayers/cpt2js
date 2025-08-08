@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.0
+
+- rename export files to be recognized as CJS/ESM by extension
+- reorder exports by priority, add default export
+- update TS target
+- update dependencies, use tsx --test and node:assert instead of jest
+
 ## 1.5.3
 
 - add ESM exports
