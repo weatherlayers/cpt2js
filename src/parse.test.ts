@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import assert from 'node:assert';
-import test from 'node:test';
+import { describe, test } from 'node:test';
 import * as path from 'node:path';
 import * as url from 'node:url';
 import * as fs from 'fs';
@@ -16,34 +16,36 @@ const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const PATH = path.join(__dirname, '../fixtures');
 const FILENAMES = fs.readdirSync(PATH).filter(x => x.endsWith('.cpt'));
 
-test('parsePalette - returns a color palette from a text', () => {
-  for (const filename of FILENAMES) {
-    const cptPath = path.join(PATH, filename);
+describe('parsePalette', () => {
+  test('returns a color palette from a text', () => {
+    for (const filename of FILENAMES) {
+      const cptPath = path.join(PATH, filename);
 
-    const cptText = fs.readFileSync(cptPath).toString();
-    const actual = parsePalette(cptText);
+      const cptText = fs.readFileSync(cptPath).toString();
+      const actual = parsePalette(cptText);
 
-    assert(actual);
+      assert(actual);
 
-    const color = actual(0).rgb();
-    assert(isFinite(color[0]));
-    assert(isFinite(color[1]));
-    assert(isFinite(color[2]));
-  }
-});
+      const color = actual(0).rgb();
+      assert(isFinite(color[0]));
+      assert(isFinite(color[1]));
+      assert(isFinite(color[2]));
+    }
+  });
 
-test('parsePalette - returns a color palette from an array', () => {
-  for (const filename of FILENAMES) {
-    const jsonPath = path.join(PATH, filename.replace('.cpt', '.json'));
+  test('returns a color palette from an array', () => {
+    for (const filename of FILENAMES) {
+      const jsonPath = path.join(PATH, filename.replace('.cpt', '.json'));
 
-    const cptArray = JSON.parse(fs.readFileSync(jsonPath).toString()).paletteArray;
-    const actual = parsePalette(cptArray);
+      const cptArray = JSON.parse(fs.readFileSync(jsonPath).toString()).paletteArray;
+      const actual = parsePalette(cptArray);
 
-    assert(actual);
+      assert(actual);
 
-    const color = actual(0).rgb();
-    assert(isFinite(color[0]));
-    assert(isFinite(color[1]));
-    assert(isFinite(color[2]));
-  }
+      const color = actual(0).rgb();
+      assert(isFinite(color[0]));
+      assert(isFinite(color[1]));
+      assert(isFinite(color[2]));
+    }
+  });
 });

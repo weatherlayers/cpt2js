@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import assert from 'node:assert';
-import test from 'node:test';
+import { describe, test } from 'node:test';
 import * as path from 'node:path';
 import * as url from 'node:url';
 import * as fs from 'fs';
@@ -16,20 +16,22 @@ const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const PATH = path.join(__dirname, '../fixtures');
 const FILENAMES = fs.readdirSync(PATH).filter(x => x.endsWith('.cpt'));
 
-test('parsePaletteTextInternal - returns a color palette', () => {
-  for (const filename of FILENAMES) {
-    const cptPath = path.join(PATH, filename);
-    const jsonPath = path.join(PATH, filename.replace('.cpt', '.json'));
-    
-    const text = fs.readFileSync(cptPath).toString();
-    const actual = parsePaletteTextInternal(text);
-    // fs.writeFileSync(jsonPath, JSON.stringify(actual));
+describe('parsePaletteTextInternal', () => {
+  test('returns a color palette', () => {
+    for (const filename of FILENAMES) {
+      const cptPath = path.join(PATH, filename);
+      const jsonPath = path.join(PATH, filename.replace('.cpt', '.json'));
+      
+      const text = fs.readFileSync(cptPath).toString();
+      const actual = parsePaletteTextInternal(text);
+      // fs.writeFileSync(jsonPath, JSON.stringify(actual));
 
-    const expected = JSON.parse(fs.readFileSync(jsonPath).toString());
-    if (!('mode' in expected)) {
-      expected.mode = undefined;
+      const expected = JSON.parse(fs.readFileSync(jsonPath).toString());
+      if (!('mode' in expected)) {
+        expected.mode = undefined;
+      }
+
+      assert.deepStrictEqual(actual, expected);
     }
-
-    assert.deepStrictEqual(actual, expected);
-  }
+  });
 });

@@ -5,8 +5,9 @@
     "lib": ["dom", "esnext"],
     "esModuleInterop": true,
     "moduleResolution": "bundler",
-    "outDir": "dist",
     "sourceMap": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -14,10 +15,10 @@
     "erasableSyntaxOnly": true
   },
   "include": [
-    "src/**/*.ts"
+    "./src/**/*.ts"
   ],
   "exclude": [
-    "src/**/*.test.ts",
+    "./src/**/*.test.ts",
     "node_modules"
   ]
 }
